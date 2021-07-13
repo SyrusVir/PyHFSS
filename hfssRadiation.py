@@ -1,9 +1,12 @@
-def InsertFarFieldSphereSetup(oDesign, name="Infinite Sphere1",
+def _getRadFieldModule(oDesign):
+    return oDesign.GetModule("RadField")
+
+def InsertFarFieldSphereSetup(oRad, name="Infinite Sphere1",
                               theta_dict={"start": 0, "stop": 180, "step": 2},
                               phi_dict={"start": -180, "stop": 180, "step": 2},
                               coord_sys="Global", face_list_name=""):
     """
-    :param oDesign: Target HFSS Design
+    :param oRad: oDesign.GetModule("RadField")
     :param name: Name of the new setup
     :param theta_dict: Theta start, stop, and step angles in degrees in dictionary with keys "start", "stop", "step"
     :param phi_dict: Phi start, stop, and step angles in degrees in dictionary with keys "start", "stop", "step"
@@ -11,7 +14,6 @@ def InsertFarFieldSphereSetup(oDesign, name="Infinite Sphere1",
     :param face_list_name: name of face list (configured in HFSS) to use for rad boundary
     :return: Name of new setup
     """
-    oRad = oDesign.GetModule("RadField")
     bool_local_cs = not(coord_sys == "Global")
     bool_custom_rad = face_list_name != ""
 
@@ -37,36 +39,35 @@ def InsertFarFieldSphereSetup(oDesign, name="Infinite Sphere1",
         "UseLocalCS:=", bool_local_cs,
         "CoordSystem:=", coord_sys
     ])
-
     return name
 
 
-def DeleteFarFieldSetup(oDesign, setups):
+def DeleteFarFieldSetup(oRad, setups):
     """
-    :param oDesign: Target HFSS Design
+    :param oRad: oDesign.GetModule("RadField")
     :param setups: List of far field setup names to delete
     :return:
     """
-    oRad = oDesign.GetModule("RadField")
     oRad.DeleteFarFieldSetup(setups)
+    oRad.release()
 
 
-def DeleteNearFieldSetup(oDesign, setups):
+
+def DeleteNearFieldSetup(oRad, setups):
     """
-    :param oDesign: Target HFSS Design
+    :param oRad: oDesign.GetModule("RadField")
     :param setups: List of near field setup names to delete
     :return:
     """
-    oRad = oDesign.GetModule("RadField")
     oRad.DeleteNearFieldSetup(setups)
+    oRad.release()
 
-def DeleteFieldSetup(oDesign, setups):
+def DeleteFieldSetup(oRad, setups):
     """
-    :param oDesign: Target HFSS Design
+    :param oRad: oDesign.GetModule("RadField")
     :param setups: List of setup names to delete (near and far field)
     :return:
     """
-    oRad = oDesign.GetModule("RadField")
     ff_setups = oRad.GetSetupNames("Infinite Sphere") # far field setups
 
     nf_setups = [] # near field setups
@@ -77,16 +78,18 @@ def DeleteFieldSetup(oDesign, setups):
     # use set method intersection() to delete appropriate setups within <setups>
     oRad.DeleteFarFieldSetup(list(set(setups).intersection(set(ff_setups))))
     oRad.DeleteNearFieldSetup(list(set(setups).intersection(set(nf_setups))))
+    oRad.release()
 
 
-def GetSetupNames(oDesign, geometry_str):
+def GetSetupNames(oRad, geometry_str):
     """
-    :param oDesign: Target HFSS Design
+    :param oRad: oDesign.GetModule("RadField")
     :param geometry_str: One of "Infinite Sphere", "Sphere", "Line", "Rectangle", or "Box"
     :return: List of setups with geometries matching <geometry_str>
     """
-    oRad = oDesign.GetModule("RadField")
-    return oRad.GetSetupNames(geometry_str)
+    names = oRad.GetSetupNames(geometry_str)
+    oRad.release()
+    return names
 
 if __name__ == "__main__":
     import ScriptEnv

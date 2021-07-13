@@ -1,34 +1,33 @@
 from hfss3DModeler import _getModeler
 
-def hfssGetVertexIDsFromObject(oDesign, obj_id):
+def GetVertexIDsFromObject(o3DMod, obj_id):
     """
-    :param oDesign: target HFSS design
+    :param o3DMod: oDesign.SetActiveEditor("3D Modeler")
     :param obj_id: target object ID (i.e. names)
     :return: 2D list where nested list correspond with object id in <obj_ids>
     """
-    return _getVtxIDs(oDesign, obj_id, "object")
+    return _getVtxIDs(o3DMod, obj_id, "object")
 
 
-def hfssGetVertexIDsFromFace(oDesign, face_id):
+def GetVertexIDsFromFace(o3DMod, face_id):
     """
-    :param oDesign: target HFSS design
+    :param o3DMod: oDesign.SetActiveEditor("3D Modeler")
     :param face_id: target face ID (int or int string)
     :return: 2D list of vertices where nested list correspond with ids in <face_ids>
     """
-    return _getVtxIDs(oDesign, face_id, "object")
+    return _getVtxIDs(o3DMod, face_id, "object")
 
 
-def hfssGetVertexIDsFromEdge(oDesign, edge_id):
+def GetVertexIDsFromEdge(o3DMod, edge_id):
     """
-    :param oDesign: target HFSS design
+    :param o3DMod: oDesign.SetActiveEditor("3D Modeler")
     :param edge_id: target edge_id (int or int string)
     :return: 2D list of vertices where nested list correspond with ids in <edge_ids>
     """
-    return _getVtxIDs(oDesign, edge_id, "object")
+    return _getVtxIDs(o3DMod, edge_id, "object")
 
 
-def _getVtxIDs(oDesign, id, mode):
-    oEditor = _getModeler(oDesign)
+def _getVtxIDs(oEditor, id, mode):
 
     vtx_ids = []
     if mode.lower() == "face":

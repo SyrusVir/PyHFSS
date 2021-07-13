@@ -2,13 +2,17 @@ def _getAnalysisModule(oDesign):
     return oDesign.GetModule("AnalysisSetup")
 
 def GetSetups(oAnalysis):
-    return oAnalysis.GetSetups()
+    setups = oAnalysis.GetSetups()
+    return setups
 
 def GetSetupCount(oAnalysis):
-    return oAnalysis.GetSetupCount()
+    cnt = oAnalysis.GetSetupCount()
+    return cnt
 
 def GetSweeps(oAnalysis):
-    return oAnalysis.GetSweeps()
+    sweeps = oAnalysis.GetSweeps()
+    return sweeps
 
 def GetSweepCount(oAnalysis):
-    return oAnalysis.GetSweepCount()
+    cnt = oAnalysis.GetSweepCount()
+    return cnt

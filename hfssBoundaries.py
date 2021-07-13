@@ -6,9 +6,9 @@ def _wrapToList(x):
 def _getBoundsModule(oDesign):
     return oDesign.GetModule("BoundarySetup")
 
-def hfssAssignCopperBound(oDesign, bound_name="", obj_names=[], face_ids=[]):
+def AssignCopperBound(oBounds, bound_name="", obj_names=[], face_ids=[]):
     """
-    :param oDesign: Target HFSS design
+    :param oBounds: oDesign.GetModule("BoundarySetup")
     :param bound_name: Name of new boundary setup
     :param obj_names: List of objects to assign to boundary
     :param face_ids: List of faces to assign boundaries
@@ -22,8 +22,6 @@ def hfssAssignCopperBound(oDesign, bound_name="", obj_names=[], face_ids=[]):
     functions to generate roughness and thickness parameters depending on options (e.g. Grouse vs Hary,
     infinite vs DC thickness)
     """
-    oBounds = _getBoundsModule(oDesign)
-
     # if no boundary name provided, generate an unused one
     if bound_name == "":
         existing_bounds = oBounds.GetBoundaries()
@@ -51,40 +49,41 @@ def hfssAssignCopperBound(oDesign, bound_name="", obj_names=[], face_ids=[]):
             "IsInternal:="		, True
         ])
 
-def hfssDeleteBoundaries(oDesign, bounds):
+
+def DeleteBoundaries(oBounds, bounds):
     """
-    oDesign - target HFSS design
-    bounds - list of strings naming boundaries to delete
+    :param oBounds: oDesign.GetModule("BoundarySetup")
+    :param bounds: list of strings naming boundaries to delete
     """
-    oBounds = oDesign.GetModule("BoundarySetup")
     oBounds.DeleteBoundareis(bounds)
 
-def hfssGetBoundaries(oDesign):
+
+def GetBoundaries(oBounds):
     """
-    Returns list of strings naming boundaries in target design
+    :param oBounds: oDesign.GetModule("BoundarySetup")
+    :return  list of strings naming boundaries in target design
     """
-    oBounds = oDesign.GetModule("BoundarySetup")
     return oBounds.GetBoundaries()
 
-def hfssGetNumBoundaries(oDesign):
+
+def GetNumBoundaries(oBounds):
     """
-    :param oDesign: Target HFSS design
-    :return: Number of boundaries in target design
+    :param oBounds: oDesign.GetModule("BoundarySetup")
+    :return Number of boundaries in target design
     """
-    oBounds = oDesign.GetModule("BoundarySetup")
     return oBounds.GetNumBoundaries()
 
-def hfssReassignBoundary(oDesign, bound_name, obj_names=[], face_ids=[]):
+
+def ReassignBoundary(oBounds, bound_name, obj_names=[], face_ids=[]):
     """
-    oDesign - target HFSS design
-    bound_name - name of boundary to reassign,
-    obj_names - list of names of objects to assign boundary
-    face_ids - list of face ID nums to assign boundary
+    :param oBounds: oDesign.GetModule("BoundarySetup")
+    :param bound_name: name of boundary to reassign,
+    :param obj_names: list of names of objects to assign boundary
+    :param face_ids: list of face ID nums to assign boundary
 
     Note that leaving both <obj_names> and <face_ids> empty will remove
     all assignments of the boundary
     """
-    oBounds = oDesign.GetModule("BoundarySetup")
     oBounds.ReassignBoundary(
         [
             "NAME:" + bound_name,
@@ -93,15 +92,15 @@ def hfssReassignBoundary(oDesign, bound_name, obj_names=[], face_ids=[]):
         ]
     )
 
-def hfssAddAssignmentToBoundary(oDesign, bound_name, obj_names=[], face_ids=[]):
+
+def AddAssignmentToBoundary(oBounds, bound_name, obj_names=[], face_ids=[]):
     """
-    :param oDesign: Target HFSS design
+    :param oBounds: oDesign.GetModule("BoundarySetup")
     :param bound_name: Target boundary setup
     :param obj_names: List of objects to add to boundary
     :param face_ids: List of face IDs to add to boundary
     :return:
     """
-    oBounds = _getBoundsModule(oDesign)
     obj_names = _wrapToList(obj_names)
     face_ids = _wrapToList(face_ids)
 

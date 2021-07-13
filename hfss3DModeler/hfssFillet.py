@@ -9,7 +9,7 @@ def _filletParamListElmt(radius, setback, edges, vertices):
             "Setback:=", "{}mm".format(setback)
         ]
 
-def _fillet(oDesign, selections, radius, setback=0, edges=[], vertices=[]):
+def _fillet(oEditor, selections, radius, setback=0, edges=[], vertices=[]):
     """
 
     :param oDesign: target HFSS design,
@@ -27,7 +27,6 @@ def _fillet(oDesign, selections, radius, setback=0, edges=[], vertices=[]):
     :return: None
     """
 
-    oEditor = _getModeler(oDesign)
     one_elmt_flag = not isinstance(selections, list)
 
     # if single object selection, wrap in list
@@ -64,16 +63,16 @@ def _fillet(oDesign, selections, radius, setback=0, edges=[], vertices=[]):
     )
 
 
-def hfss2DFillet(oDesign, selections, vtx_ids, radius):
+def hfss2DFillet(oEditor, selections, vtx_ids, radius):
     """
-    :param oDesign: target HFSS designs
+    :param oEditor: oDesign.SetActiveEditor("3D Modeler")
     :param selections: List of face ids
     :param vtx_ids: 2D list where nested lists are vertex
         belonging to corresponding face entity <selections>
     :param radius: Fillet radius in mm
     :return: None
     """
-    _fillet(oDesign, selections=selections, vertices=vtx_ids, radius=radius)
+    _fillet(oEditor, selections=selections, vertices=vtx_ids, radius=radius)
 
 
 

@@ -1,16 +1,48 @@
+def _getOutVarModule(oDesign):
+    return oDesign.GetModule("OutputVariable")
 
-def GetOutputVariableValue(oModule, name, variation, soln, report_type, context=[]):
-    val = oModule.GetOutputVariableValue(name, variation, soln, report_type, context)
+
+def GetOutputVariableValue(oVars, name, variation, soln, report_type, context=[]):
+    """
+    :param oVars: oDesign.GetModule("OutputVariable")
+    :param name: output variable name
+    :param variation: e.g. "Freq='1GHz'", "Theta='25deg'", "Phi='90deg'"
+    :param soln: Name of solution e.g. "Setup1 : Sweep"
+    :param report_type: Data type e.g. "Modal Solution Data"
+    :param context: Empty list or list of ["Context:=", <Far field setup or geometry>]
+    :return: numeric value of specified output variable
+    """
+    val = oVars.GetOutputVariableValue(name, variation, soln, report_type, context)
     return val
 
-def CreateOutputVar(oModule, name, expression, soln_name, report_type, cntxt=[]):
-        oModule.CreateOutputVariable(name, expression, soln_name, report_type, cntxt)
+def CreateOutputVar(oVars, name, expression, soln_name, report_type, cntxt=[]):
+    """
+    :param oVars: oDesign.GetModule("OutputVariable")
+    :param name:
+    :param expression:
+    :param soln_name:
+    :param report_type:
+    :param cntxt:
+    :return:
+    """
+    oVars.CreateOutputVariable(name, expression, soln_name, report_type, cntxt)
 
-def DeleteOutputVar(oModule, name):
-    oModule.DeleteOutputVariable(name)
+def DeleteOutputVar(oVars, name):
+    """
+    :param oVars: oDesign.GetModule("OutputVariable")
+    :param name:
+    :return:
+    """
+    oVars.DeleteOutputVariable(name)
 
-def DoesOutVarExist(oModule, name):
-    return oModule.DoesOutputVariableExist(name)
+def DoesOutVarExist(oVars, name):
+    """
+    :param oVars:
+    :param name:
+    :return:
+    """
+    val = oVars.DoesOutputVariableExist(name)
+    return val
 
 if __name__ == "__main__":
     import sys

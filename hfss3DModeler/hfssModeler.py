@@ -1,44 +1,40 @@
 from hfss3DModeler import _getModeler
 
-def hfssGetObjName(oDesign, obj_idx):
+def hfssGetObjName(o3DMod, obj_idx):
     """
-    :param oDesign: Target HFSS design
+    :param o3DMod: oDesign.SetActiveEditor("3D Modeler")
     :param obj_idx: Object index (i.e. order of creation)
     :return: Object name
     """
-    o3DMod = _getModeler(oDesign)
     return o3DMod.GetObjectName(obj_idx)
 
 
-def hfssGetNumObjects(oDesign):
+def hfssGetNumObjects(o3DMod):
     """
-    :param oDesign: Target HFSS Design
+    :param o3DMod: oDesign.SetActiveEditor("3D Modeler")
     :return: Returns number of objects in design
     """
-    o3DMod = _getModeler(oDesign)
     return o3DMod.GetNumObjects()
 
 
-def hfssGetAllObjNames(oDesign):
+def hfssGetAllObjNames(o3DMod):
     """
-    :param oDesign: Target HFSS Design
+    :param o3DMod: oDesign.SetActiveEditor("3D Modeler")
     :return: List of names of all objects in target design
     """
-    o3DMod = _getModeler(oDesign)
     return [o3DMod.GetObjectName(i) for i in range(o3DMod.GetNumObjects())]
 
 
-def hfssDelete(oDesign, objects):
+def hfssDelete(o3DMod, objects):
     """
-    :param oDesign: Target HFSS design
+    :param o3DMod: oDesign.SetActiveEditor("3D Modeler")
     :param objects: List or comma-separated string of objects to delete
     :return: None
     """
-    o3DEdit = _getModeler(oDesign)
     obj_str = objects
     if isinstance(objects, list):
         obj_str = ",".join(objects)
-    o3DEdit.Delete(
+    o3DMod.Delete(
         [
             "NAME:Selections",
             "Selections:=", obj_str
